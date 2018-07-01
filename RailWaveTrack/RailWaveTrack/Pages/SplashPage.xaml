@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RailWaveTrack.Pages.SplashPage" BackgroundColor="#0288d1">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand">
+            
+            <ProgressBar IsEnabled="True" IsVisible="True" ProgressColor="Red"/>
+            <ActivityIndicator IsRunning="True" x:Name="ctrlActivator" Color="Blue" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

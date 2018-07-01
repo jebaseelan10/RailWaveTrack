@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RailWaveTrack.Pages.RailMainGui" BackgroundColor="#0288d1">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" x:Key="btnStyle">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="TextColor" Value="#fdd835"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="#005b9f"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <ScrollView.Content>
+                <StackLayout>
+                    <Frame Margin="0,5,0,0" BorderColor="#5eb8ff" CornerRadius="4" BackgroundColor="AliceBlue">
+                    <Grid RowSpacing="1" ColumnSpacing="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Style="{StaticResource btnStyle}" Text="Book Train Ticket" Grid.Row="0" Grid.Column="0"/>
+                        <Button Style="{StaticResource btnStyle}" Text="Check PNR" Grid.Row="0" Grid.Column="1" Clicked="PNRButton_Clicked"/>
+                        <Button Style="{StaticResource btnStyle}" Text="Seat Availability" Grid.Row="1" Grid.Column="0"/>
+                        <Button Style="{StaticResource btnStyle}" Text="Running Status" Grid.Row="1" Grid.Column="1"/>
+                    </Grid>
+                </Frame>
+                   
+                </StackLayout>
+            </ScrollView.Content>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

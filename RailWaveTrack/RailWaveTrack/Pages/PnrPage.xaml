@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"       
+             xmlns:bahaviour="clr-namespace:RailWaveTrack.Behaviour"
+             xmlns:convertor="clr-namespace:RailWaveTrack.Convertor"
+             xmlns:grid="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="RailWaveTrack.Pages.PnrPage" BackgroundColor="#0288d1">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convertor:PNRButtonConvertor x:Key="buttonEnable"></convertor:PNRButtonConvertor>
+            <convertor:BoolToStringConverter x:Key="chartStatus"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HeightRequest="40" Padding="5">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="ctrlTxtPNR" Keyboard="Numeric" Placeholder="Search PNR..." HorizontalOptions="CenterAndExpand">
+                            <Entry.Behaviors>
+                                <bahaviour:PNRValidationBehavior MaxLength="10"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Button IsEnabled="{Binding Source={x:Reference ctrlTxtPNR},
+                                    Path=TextColor,
+                                    Converter={StaticResource buttonEnable}}"
+                                 Text="Check" HorizontalOptions="End" Clicked="Button_Clicked" CornerRadius="5" BorderRadius="10">
+                            <Button.Triggers>
+                                <Trigger TargetType="Button"
+                                 Property="IsEnabled"
+                                 Value="True">  
+                                    <Setter Property="TextColor" Value="#fdd835" />
+                                    <Setter Property="BackgroundColor" Value="#005b9f" />
+                                    <Setter Property="BorderColor" Value="#5eb8ff" />
+                                </Trigger>
+                            </Button.Triggers>
+                        </Button>
+                    </StackLayout>
+                </Frame>
+                <Frame x:Name="ctrlFramePNRResult" HeightRequest="80" IsVisible="False" CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Path=from_station.code}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Medium" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"/>
+                        <Image Source="trainLogo.png" HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" />
+                        <Label Text="{Binding Path=to_station.code}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Medium" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
+
+                        <Label Text="{Binding Path=train.number}" HorizontalOptions="Center" FontSize="Micro" Grid.Row="1" Grid.Column="1"/>
+
+                        <Label Text="{Binding Path=from_station.name}" HorizontalOptions="Center" FontSize="Micro" Grid.Row="2" Grid.Column="0"/>
+                        <Label Text="{Binding Path=train.name}" HorizontalOptions="Center" FontSize="Micro" Grid.Row="3" Grid.Column="1"/>
+                        <Label Text="{Binding Path=to_station.name}" HorizontalOptions="CenterAndExpand" FontSize="Micro" Grid.Row="2" Grid.Column="2"/>
+                        
+                        <Label Text="{Binding doj}" FontSize="Micro" HorizontalOptions="Center" Grid.Row="3" Grid.Column="0"/>
+                        <Label Text="{Binding doj}" FontSize="Micro" HorizontalOptions="Center" Grid.Row="3" Grid.Column="2"/>
+
+                    </Grid>
+                </Frame>
+                <Grid Padding="5" x:Name="ctrlBookingStatus" IsVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame x:Name="ctrlFrameBookingStatus" IsVisible="False" HorizontalOptions="FillAndExpand" Grid.Row="0" VerticalOptions="FillAndExpand" HeightRequest="130">
+                        <grid:DataGrid ColumnSpacing="2" HeaderBackground="#005b9f" HeaderTextColor="#fdd835" Padding="0,5,0,0" Margin="2,2,2,2"
+                       RowHeight="40" HeaderHeight="50" BorderColor="#CCCCCC" WidthRequest="100" HeightRequest="80"
+                       x:Name="ctrlGridSource" ActiveRowColor="#5eb8ff" BackgroundColor="#FFFFFF" SelectionEnabled="True" RowSpacing="2" BorderThickness="2">
+                            <x:Arguments>
+                                <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                            </x:Arguments>
+                            <grid:DataGrid.HeaderFontSize>
+                                <OnIdiom  x:TypeArguments="x:Double">
+                                    <OnIdiom.Tablet>15</OnIdiom.Tablet>
+                                    <OnIdiom.Phone>12</OnIdiom.Phone>
+                                </OnIdiom>
+                            </grid:DataGrid.HeaderFontSize>
+                            <grid:DataGrid.Columns>
+                                <grid:DataGridColumn Title="No" PropertyName="no" Width="0.8*"/>
+                                <grid:DataGridColumn Title="Current Status" PropertyName="current_status" Width="2*"/>
+                                <grid:DataGridColumn Title="Booking Status" PropertyName="booking_status"  Width="2*"/>
+                            </grid:DataGrid.Columns>
+                            <grid:DataGrid.RowsBackgroundColorPalette>
+                                <grid:PaletteCollection>
+                                    <Color>#FFFFFF</Color>
+                                    <Color>#F2F2F2</Color>
+                                    <Color>#FFFFFF</Color>
+                                    <!--<Color>#FFFFFF</Color>-->
+                                </grid:PaletteCollection>
+                            </grid:DataGrid.RowsBackgroundColorPalette>
+                        </grid:DataGrid>
+                    </Frame>
+                    <StackLayout Grid.Row="1" BackgroundColor="White">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Path=chart_prepared, Converter={StaticResource chartStatus}}" />
+                            <Label Text="{Binding Path=journey_class.code}" HorizontalOptions="Start" FontSize="Micro"/>
+                            <Label Text="{Binding Path=journey_class.name}" HorizontalOptions="Start" FontSize="Micro"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            
+                        </StackLayout> 
+                    </StackLayout>
+                </Grid>
+                <Grid x:Name="ctrlBottomFrame" HorizontalOptions="Center" IsVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Row="0" WidthRequest="100" Grid.Column="0" Padding="5">
+                        <StackLayout Orientation="Vertical">
+                            <Image Source="coach.png" HeightRequest="25"/>
+                            <Label Text="Train Route" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Row="0" WidthRequest="100" Grid.Column="1" Padding="5">
+                        <StackLayout Orientation="Vertical">
+                            <Image Source="trainLogo.png" HeightRequest="25"/>
+                            <Label Text="Coach Position" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Row="0" Grid.Column="2" WidthRequest="100" Padding="5">
+                        <StackLayout Orientation="Vertical">
+                            <Image Source="trainLogo.png" HeightRequest="25"/>
+                            <Label Text="Running Status" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+                <ActivityIndicator x:Name="ctrlActivator" Color="Blue" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </StackLayout>
+            <!--<StackLayout HorizontalOptions="Center">
+                <ActivityIndicator x:Name="ctrlActivator" Color="Blue"/>
+            </StackLayout>-->          
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
