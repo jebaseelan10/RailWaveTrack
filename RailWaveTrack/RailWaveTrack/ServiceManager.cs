@@ -16,7 +16,7 @@ namespace RailWaveTrack.Services
 
         public async Task<PNRRootobject> RefreshDataAsync(string pnrNumber)
         {
-            return await RestServices.RefreshDataAsync(pnrNumber);
+            return await RestServices.RefreshDataAsync(pnrNumber); 
         }
     }
 }
